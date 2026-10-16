@@ -34,10 +34,20 @@ start /wait "" "%TEMP_DIR%\vc_redist.x64.exe" /install /quiet /norestart
 if errorlevel 1 goto :error
 
 echo Installation completed.
+
+echo Cleaning up temporary files...
+if exist "%TEMP_DIR%" rmdir /s /q "%TEMP_DIR%"
+
+echo Cleanup completed.
 pause
 exit /b 0
 
 :error
-echo An error occurred. Exit code: %errorlevel%
+set "ERR_CODE=%errorlevel%"
+echo An error occurred. Exit code: %ERR_CODE%
+
+echo Cleaning up temporary files...
+if exist "%TEMP_DIR%" rmdir /s /q "%TEMP_DIR%"
+
 pause
-exit /b 1
+exit /b %ERR_CODE%
